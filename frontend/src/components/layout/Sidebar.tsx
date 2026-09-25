@@ -18,7 +18,7 @@ import {
 import { useAppStore } from '@/store/appStore';
 
 const MAIN_NAV_ITEMS = [
-  { href: '/', label: 'Meetings', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Meetings', icon: LayoutDashboard },
 ];
 
 const SECONDARY_NAV_ITEMS = [
@@ -67,7 +67,7 @@ export default function Sidebar({ onNewMeeting }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 px-3 pt-2 space-y-0.5 overflow-y-auto">
         {MAIN_NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || (href !== '/' && pathname.startsWith(href));
+          const active = pathname === href || pathname.startsWith(href) || (href === '/dashboard' && pathname.startsWith('/meetings'));
           return (
             <Link
               key={href}
