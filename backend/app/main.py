@@ -16,15 +16,21 @@ app = FastAPI(
 )
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
+# Safely parse FRONTEND_URL
+raw_frontend_url = os.getenv("FRONTEND_URL", "")
+frontend_urls = [url.strip().rstrip("/") for url in raw_frontend_url.split(",")] if raw_frontend_url else []
+
+allow_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+] + [url for url in frontend_urls if url]
+
+# Log the allowed origins for debugging (safe to log)
+print(f"STARTUP: Configuring CORS with allow_origins={allow_origins}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        origin for origin in [
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            os.getenv("FRONTEND_URL", ""),
-        ] if origin
-    ],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
