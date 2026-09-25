@@ -9,7 +9,7 @@ interface MeetingFiltersProps {
 }
 
 const INPUT_CLASS =
-  'bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition';
+  'bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition';
 
 export default function MeetingFiltersBar({ filters, onChange }: MeetingFiltersProps) {
   const isAnyActive =

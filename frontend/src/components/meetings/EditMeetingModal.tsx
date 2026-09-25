@@ -76,7 +76,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
@@ -88,7 +88,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
                 type="datetime-local"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <div>
@@ -100,7 +100,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
                 min={1}
                 value={durationMin}
                 onChange={(e) => setDurationMin(parseInt(e.target.value) || 60)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
                     value={p}
                     onChange={(e) => setParticipant(i, e.target.value)}
                     placeholder={`Participant ${i + 1}`}
-                    className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   />
                   {participants.length > 1 && (
                     <button
@@ -132,7 +132,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
               <button
                 type="button"
                 onClick={addParticipant}
-                className="flex items-center gap-1.5 text-sm text-violet-600 hover:text-violet-700 font-medium"
+                className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium"
               >
                 <Plus className="w-3.5 h-3.5" /> Add participant
               </button>
@@ -151,7 +151,7 @@ export default function EditMeetingModal({ meeting, onClose, onUpdated }: EditMe
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+              className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
             >
               {loading ? 'Saving...' : 'Save Changes'}
             </button>

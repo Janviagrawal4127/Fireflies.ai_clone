@@ -89,7 +89,7 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
                 key={item.id}
                 className="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-lg hover:border-gray-200 transition group"
               >
-                <button onClick={() => toggle(item)} className="mt-0.5 flex-shrink-0 text-gray-300 hover:text-violet-500 transition-colors">
+                <button onClick={() => toggle(item)} className="mt-0.5 flex-shrink-0 text-gray-300 hover:text-indigo-500 transition-colors">
                   <Circle className="w-4.5 h-4.5" />
                 </button>
                 <div className="flex-1 min-w-0">
@@ -100,9 +100,9 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
                         value={editText}
                         onChange={(e) => setEditText(e.target.value)}
                         onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(item); if (e.key === 'Escape') setEditId(null); }}
-                        className="flex-1 text-sm border border-violet-300 rounded px-2 py-0.5 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                        className="flex-1 text-sm border border-indigo-300 rounded px-2 py-0.5 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       />
-                      <button onClick={() => saveEdit(item)} className="text-violet-600 hover:text-violet-700"><Check className="w-4 h-4" /></button>
+                      <button onClick={() => saveEdit(item)} className="text-indigo-600 hover:text-indigo-700"><Check className="w-4 h-4" /></button>
                       <button onClick={() => setEditId(null)} className="text-gray-400 hover:text-gray-600"><X className="w-4 h-4" /></button>
                     </div>
                   ) : (
@@ -136,7 +136,7 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
           <div className="space-y-2">
             {completed.map((item) => (
               <div key={item.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg group">
-                <button onClick={() => toggle(item)} className="mt-0.5 flex-shrink-0 text-violet-500 hover:text-gray-400 transition-colors">
+                <button onClick={() => toggle(item)} className="mt-0.5 flex-shrink-0 text-indigo-500 hover:text-gray-400 transition-colors">
                   <CheckCircle2 className="w-4.5 h-4.5" />
                 </button>
                 <div className="flex-1">
@@ -154,14 +154,14 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
 
       {/* Add item */}
       {adding ? (
-        <div className="border border-violet-200 rounded-lg p-3 bg-violet-50 space-y-2">
+        <div className="border border-indigo-200 rounded-lg p-3 bg-indigo-50 space-y-2">
           <input
             autoFocus
             type="text"
             placeholder="Task description"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <div className="flex gap-2">
             <input
@@ -169,17 +169,17 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
               placeholder="Assignee (optional)"
               value={newAssignee}
               onChange={(e) => setNewAssignee(e.target.value)}
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-violet-500"
+              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
             <input
               type="date"
               value={newDueDate}
               onChange={(e) => setNewDueDate(e.target.value)}
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-violet-500"
+              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>
           <div className="flex gap-2">
-            <button onClick={addItem} className="flex-1 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium py-1.5 rounded-lg transition-colors">
+            <button onClick={addItem} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-1.5 rounded-lg transition-colors">
               Add Task
             </button>
             <button onClick={() => setAdding(false)} className="px-4 text-sm text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg">
@@ -190,7 +190,7 @@ export function ActionItemsTab({ items, meetingId, onChange }: ActionItemsTabPro
       ) : (
         <button
           onClick={() => setAdding(true)}
-          className="w-full flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-medium py-2 border-2 border-dashed border-violet-200 hover:border-violet-400 rounded-lg transition-colors justify-center"
+          className="w-full flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 font-medium py-2 border-2 border-dashed border-indigo-200 hover:border-indigo-400 rounded-lg transition-colors justify-center"
         >
           <Plus className="w-4 h-4" />
           Add Action Item
@@ -244,7 +244,7 @@ export function SummaryTab({ summary, meetingId, onUpdated }: SummaryTabProps) {
             {summary.key_topics.map((topic, i) => (
               <span
                 key={i}
-                className="px-3 py-1 bg-violet-50 text-violet-700 text-sm rounded-full font-medium border border-violet-100"
+                className="px-3 py-1 bg-indigo-50 text-indigo-700 text-sm rounded-full font-medium border border-indigo-100"
               >
                 {topic}
               </span>
@@ -261,12 +261,12 @@ export function SummaryTab({ summary, meetingId, onUpdated }: SummaryTabProps) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Add notes about this meeting..."
           rows={5}
-          className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+          className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
         />
         <button
           onClick={saveNotes}
           disabled={saving}
-          className="mt-2 px-4 py-1.5 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+          className="mt-2 px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
         >
           {saving ? 'Saving...' : 'Save Notes'}
         </button>

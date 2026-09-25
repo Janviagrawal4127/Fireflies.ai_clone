@@ -83,20 +83,20 @@ export default function DashboardPage() {
               <div className="flex items-center bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-violet-600' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                   <LayoutGrid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-violet-600' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`p-1.5 rounded-md transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                   <List className="w-4 h-4" />
                 </button>
               </div>
               <button
                 onClick={() => setCreateOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
               >
                 <Mic2 className="w-4 h-4" />
                 New Meeting
@@ -147,8 +147,8 @@ export default function DashboardPage() {
           {/* Empty state */}
           {!loading && !error && meetings.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center mb-4">
-                <Mic2 className="w-8 h-8 text-violet-500" />
+              <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4">
+                <Mic2 className="w-8 h-8 text-indigo-500" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-1">No meetings found</h3>
               <p className="text-sm text-gray-500 mb-6 max-w-xs">
@@ -158,7 +158,7 @@ export default function DashboardPage() {
               </p>
               <button
                 onClick={() => setCreateOpen(true)}
-                className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
               >
                 Create Meeting
               </button>

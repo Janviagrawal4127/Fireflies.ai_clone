@@ -144,7 +144,7 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
         <div className="flex-1 flex flex-col">
           <Topbar />
           <div className="flex-1 flex items-center justify-center">
-            <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
           </div>
         </div>
         <ToastContainer />
@@ -161,7 +161,7 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
           <div className="flex-1 flex flex-col items-center justify-center gap-4">
             <AlertCircle className="w-12 h-12 text-red-400" />
             <p className="text-gray-600">{error}</p>
-            <Link href="/" className="text-violet-600 hover:underline text-sm">
+            <Link href="/" className="text-indigo-600 hover:underline text-sm">
               Back to Meetings
             </Link>
           </div>
@@ -323,14 +323,14 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border-b-2 transition-colors mr-1 ${
                       activeTab === tab.id
-                        ? 'border-violet-600 text-violet-600'
+                        ? 'border-indigo-600 text-indigo-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700'
                     }`}
                   >
                     {tab.icon}
                     {tab.label}
                     {tab.count !== undefined && tab.count > 0 && (
-                      <span className="bg-violet-100 text-violet-700 text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                      <span className="bg-indigo-100 text-indigo-700 text-xs font-semibold px-1.5 py-0.5 rounded-full">
                         {tab.count}
                       </span>
                     )}

@@ -37,7 +37,7 @@ const TranscriptLineItem = memo(function TranscriptLineItem({
       onClick={() => onClick(line.start_time)}
       className={`group flex gap-3 px-4 py-3 cursor-pointer rounded-lg mx-1 transition-all ${
         isActive
-          ? 'bg-violet-50 border-l-2 border-violet-500'
+          ? 'bg-indigo-50 border-l-2 border-indigo-500'
           : 'hover:bg-gray-50 border-l-2 border-transparent'
       }`}
     >
@@ -56,7 +56,7 @@ const TranscriptLineItem = memo(function TranscriptLineItem({
           </span>
           <button
             onClick={(e) => { e.stopPropagation(); onClick(line.start_time); }}
-            className="text-xs text-gray-400 hover:text-violet-600 font-mono transition-colors"
+            className="text-xs text-gray-400 hover:text-indigo-600 font-mono transition-colors"
           >
             {formatTime(line.start_time)}
           </button>
@@ -109,11 +109,11 @@ export default function TranscriptPanel({ lines, onSeek }: TranscriptPanelProps)
             placeholder="Search transcript..."
             value={transcriptQuery}
             onChange={(e) => setTranscriptQuery(e.target.value)}
-            className="w-full pl-3 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full pl-3 pr-10 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
           {transcriptQuery && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              <span className="text-xs text-violet-600 font-medium">{matchCount} match{matchCount !== 1 ? 'es' : ''}</span>
+              <span className="text-xs text-indigo-600 font-medium">{matchCount} match{matchCount !== 1 ? 'es' : ''}</span>
               <button
                 onClick={() => setTranscriptQuery('')}
                 className="text-gray-400 hover:text-gray-600 text-xs ml-1"

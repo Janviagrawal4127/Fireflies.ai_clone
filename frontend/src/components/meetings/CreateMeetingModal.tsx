@@ -101,7 +101,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Q4 Product Strategy Meeting"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
@@ -114,7 +114,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <div>
@@ -124,7 +124,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                 min={1}
                 value={durationMin}
                 onChange={(e) => setDurationMin(parseInt(e.target.value) || 60)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -140,7 +140,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                     value={p}
                     onChange={(e) => setParticipant(i, e.target.value)}
                     placeholder={`Participant ${i + 1}`}
-                    className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   />
                   {participants.length > 1 && (
                     <button type="button" onClick={() => removeParticipant(i)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
@@ -152,7 +152,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
               <button
                 type="button"
                 onClick={addParticipant}
-                className="flex items-center gap-1.5 text-sm text-violet-600 hover:text-violet-700 font-medium"
+                className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium"
               >
                 <Plus className="w-3.5 h-3.5" /> Add participant
               </button>
@@ -168,7 +168,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                 onClick={() => setTranscriptMethod('paste')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   transcriptMethod === 'paste'
-                    ? 'bg-violet-600 text-white'
+                    ? 'bg-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -180,7 +180,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                 onClick={() => setTranscriptMethod('upload')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   transcriptMethod === 'upload'
-                    ? 'bg-violet-600 text-white'
+                    ? 'bg-indigo-600 text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -195,17 +195,17 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
                 onChange={(e) => setRawTranscript(e.target.value)}
                 placeholder={'Paste transcript here...\n\nFormat:\n[Speaker Name]\nText of what they said...\n\n[Another Speaker]\nMore text...'}
                 rows={6}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent font-mono"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono"
               />
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-violet-400 hover:bg-violet-50 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-colors">
                 <Upload className="w-5 h-5 text-gray-400 mb-1" />
                 <span className="text-sm text-gray-500">Upload .txt or .vtt file</span>
                 <input type="file" accept=".txt,.vtt" onChange={handleFileUpload} className="hidden" />
               </label>
             )}
             {rawTranscript && (
-              <p className="text-xs text-violet-600 mt-1">{rawTranscript.split('\n').length} lines loaded</p>
+              <p className="text-xs text-indigo-600 mt-1">{rawTranscript.split('\n').length} lines loaded</p>
             )}
           </div>
 
@@ -221,7 +221,7 @@ export default function CreateMeetingModal({ open, onClose, onCreated }: CreateM
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+              className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
             >
               {loading ? 'Creating...' : 'Create Meeting'}
             </button>

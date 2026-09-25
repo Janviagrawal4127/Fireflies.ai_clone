@@ -55,7 +55,7 @@ export default function Topbar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => results.length > 0 && setOpen(true)}
-          className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition"
+          className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
         />
         {query && (
           <button
@@ -81,7 +81,7 @@ export default function Topbar() {
                 onClick={() => handleResultClick(r)}
                 className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-50 last:border-0"
               >
-                <p className="text-xs font-medium text-violet-600 mb-0.5">{r.meeting_title}</p>
+                <p className="text-xs font-medium text-indigo-600 mb-0.5">{r.meeting_title}</p>
                 <p className="text-sm text-gray-800 line-clamp-2">{r.text}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{r.speaker} · {formatTime(r.start_time)}</p>
               </button>
@@ -96,7 +96,7 @@ export default function Topbar() {
         </button>
         <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
           <Bell className="w-4.5 h-4.5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-violet-500 rounded-full" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full" />
         </button>
       </div>
     </header>

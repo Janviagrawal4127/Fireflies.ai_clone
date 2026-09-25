@@ -142,7 +142,7 @@ export default function MediaPlayer({ audioUrl, totalDuration = 3600, onSeek }: 
             return (
               <div
                 key={i}
-                className={`flex-1 rounded-sm transition-colors ${isPast ? 'bg-violet-500' : 'bg-gray-200'}`}
+                className={`flex-1 rounded-sm transition-colors ${isPast ? 'bg-indigo-500' : 'bg-gray-200'}`}
                 style={{ height: `${height}px` }}
               />
             );
@@ -160,7 +160,7 @@ export default function MediaPlayer({ audioUrl, totalDuration = 3600, onSeek }: 
           step={0.5}
           value={currentTime}
           onChange={handleProgressChange}
-          className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-violet-600"
+          className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-indigo-600"
         />
         <div className="flex justify-between text-xs text-gray-400 mt-1">
           <span>{formatTime(currentTime)}</span>
@@ -180,7 +180,7 @@ export default function MediaPlayer({ audioUrl, totalDuration = 3600, onSeek }: 
 
         <button
           onClick={togglePlay}
-          className="w-10 h-10 bg-violet-600 hover:bg-violet-700 text-white rounded-full flex items-center justify-center transition-colors shadow-sm"
+          className="w-10 h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center transition-colors shadow-sm"
         >
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
         </button>
