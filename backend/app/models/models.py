@@ -12,7 +12,8 @@ def generate_uuid() -> str:
 
 
 def now_iso() -> str:
-    return datetime.utcnow().isoformat()
+    from datetime import timezone
+    return datetime.now(timezone.utc).isoformat()
 
 
 class Meeting(Base):

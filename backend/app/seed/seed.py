@@ -17,7 +17,8 @@ from app.models.models import Base, Meeting, TranscriptLine, Summary, ActionItem
 # ─── helpers ────────────────────────────────────────────────────────────────
 
 def iso_date(days_ago: int, hour: int = 10, minute: int = 0) -> str:
-    dt = datetime.utcnow() - timedelta(days=days_ago)
+    from datetime import timezone
+    dt = datetime.now(timezone.utc) - timedelta(days=days_ago)
     return dt.replace(hour=hour, minute=minute, second=0, microsecond=0).isoformat()
 
 def make_lines(raw: list[dict], offset: float = 0.0) -> list[dict]:
