@@ -23,6 +23,7 @@ frontend_urls = [url.strip().rstrip("/") for url in raw_frontend_url.split(",")]
 allow_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://fireflies-ai-clone-u4h4.vercel.app",
 ] + [url for url in frontend_urls if url]
 
 # Log the allowed origins for debugging (safe to log)
