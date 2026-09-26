@@ -7,7 +7,6 @@ import {
   Mic2,
   LayoutDashboard,
   Settings,
-  ChevronDown,
   Plus,
   Star,
   Users,
@@ -50,10 +49,10 @@ const MAIN_NAV_ITEMS = [
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
-const LIBRARY_ITEMS = [
-  { label: 'Starred', icon: Star },
-  { label: 'Shared with me', icon: Users },
-  { label: 'Recent', icon: Clock },
+const LIBRARY_NAV_ITEMS = [
+  { href: '/starred', label: 'Starred', icon: Star },
+  { href: '/shared', label: 'Shared with me', icon: Users },
+  { href: '/recent', label: 'Recent', icon: Clock },
 ];
 
 interface SidebarProps {
@@ -63,15 +62,13 @@ interface SidebarProps {
 export default function Sidebar({ onNewMeeting }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { addToast } = useAppStore();
   const [profile, setProfile] = useState<ProfileSnap>({ name: 'Janvi Agrawal', email: 'janvi@example.com', initials: 'JA' });
 
   useEffect(() => {
     setProfile(loadProfile());
-    // Listen for custom event from Settings page
-    const onStorage = () => setProfile(loadProfile());
-    window.addEventListener('ff_profile_updated', onStorage);
-    return () => window.removeEventListener('ff_profile_updated', onStorage);
+    const onProfileUpdated = () => setProfile(loadProfile());
+    window.addEventListener('ff_profile_updated', onProfileUpdated);
+    return () => window.removeEventListener('ff_profile_updated', onProfileUpdated);
   }, []);
 
   const isActive = (href: string) =>
@@ -121,15 +118,19 @@ export default function Sidebar({ onNewMeeting }: SidebarProps) {
         <div className="pt-6 pb-2">
           <p className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Library</p>
         </div>
-        {LIBRARY_ITEMS.map(({ label, icon: Icon }) => (
-          <button
-            key={label}
-            onClick={() => addToast(`${label} — coming soon!`)}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+        {LIBRARY_NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isActive(href)
+                ? 'bg-slate-800 text-white'
+                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+            }`}
           >
             <Icon className="w-[18px] h-[18px]" />
             {label}
-          </button>
+          </Link>
         ))}
       </nav>
 

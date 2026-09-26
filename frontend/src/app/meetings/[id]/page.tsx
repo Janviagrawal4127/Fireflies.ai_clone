@@ -13,11 +13,12 @@ import CreateMeetingModal from '@/components/meetings/CreateMeetingModal';
 import ToastContainer from '@/components/ui/ToastContainer';
 import { getMeeting, deleteMeeting } from '@/lib/api';
 import { useAppStore } from '@/store/appStore';
+import { addRecentItem, isMeetingStarred, toggleStarredMeeting, shareMeeting } from '@/lib/library';
 import { findActiveLineIndex, formatDate, formatDuration, getInitials, getSpeakerAvatarColor } from '@/lib/utils';
 import type { Meeting, ActionItem, Summary } from '@/types';
 import {
   ChevronLeft, Calendar, Clock, Users, Edit2, Trash2,
-  FileText, CheckSquare, BookOpen, StickyNote, Loader2, AlertCircle, Download
+  FileText, CheckSquare, BookOpen, StickyNote, Loader2, AlertCircle, Download, Star, Share2, X,
 } from 'lucide-react';
 
 type Tab = 'summary' | 'actions' | 'transcript-info';
@@ -41,6 +42,9 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
   const [createOpen, setCreateOpen] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [starred, setStarred] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [shareEmail, setShareEmail] = useState('demo@example.com');
 
   // Reset transcript search when unmounting
   useEffect(() => {
@@ -53,6 +57,9 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
     try {
       const data = await getMeeting(id);
       setMeeting(data);
+      // Track recent + init star state
+      addRecentItem({ id: data.id, type: 'meeting', title: data.title });
+      setStarred(isMeetingStarred(data.id));
     } catch {
       setError('Meeting not found or server unavailable.');
     } finally {
@@ -97,6 +104,20 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
     } finally {
       setDeleting(false);
     }
+  };
+
+  const handleStarToggle = () => {
+    if (!meeting) return;
+    const nowStarred = toggleStarredMeeting(meeting.id);
+    setStarred(nowStarred);
+    useAppStore.getState().addToast(nowStarred ? 'Added to Starred' : 'Removed from Starred');
+  };
+
+  const handleShare = () => {
+    if (!meeting || !shareEmail.trim()) return;
+    shareMeeting(meeting.id, meeting.title, shareEmail.trim(), 'you@example.com');
+    setShareOpen(false);
+    useAppStore.getState().addToast(`Meeting shared with ${shareEmail.trim()}`);
   };
 
   const handleExport = () => {
@@ -239,6 +260,25 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
 
               {/* Action buttons */}
               <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={handleStarToggle}
+                  title={starred ? 'Unstar' : 'Star'}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-lg transition-colors ${
+                    starred
+                      ? 'text-yellow-600 border-yellow-200 bg-yellow-50 hover:bg-yellow-100'
+                      : 'text-gray-600 hover:text-yellow-600 border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  <Star className={`w-3.5 h-3.5 ${starred ? 'fill-yellow-400' : ''}`} />
+                  {starred ? 'Starred' : 'Star'}
+                </button>
+                <button
+                  onClick={() => setShareOpen(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  Share
+                </button>
                 <button
                   onClick={handleExport}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -384,6 +424,48 @@ export default function MeetingDetailPage({ params, searchParams }: PageProps) {
         onClose={() => setCreateOpen(false)}
         onCreated={(m) => router.push(`/meetings/${m.id}`)}
       />
+
+      {/* Share modal */}
+      {shareOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h2 className="text-base font-bold text-gray-900">Share Meeting</h2>
+              <button onClick={() => setShareOpen(false)} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-600 font-medium truncate">
+                {meeting.title}
+              </p>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Share with</label>
+                <input
+                  type="email"
+                  value={shareEmail}
+                  onChange={(e) => setShareEmail(e.target.value)}
+                  placeholder="person@email.com"
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 px-6 py-4 border-t border-gray-100">
+              <button
+                onClick={handleShare}
+                disabled={!shareEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(shareEmail.trim())}
+                className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
+              >
+                Share
+              </button>
+              <button onClick={() => setShareOpen(false)} className="px-5 text-sm text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
     </div>
   );

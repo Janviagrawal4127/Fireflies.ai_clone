@@ -7,6 +7,7 @@ import Topbar from '@/components/layout/Topbar';
 import ToastContainer from '@/components/ui/ToastContainer';
 import CreateMeetingModal from '@/components/meetings/CreateMeetingModal';
 import { useAppStore } from '@/store/appStore';
+import { addRecentItem } from '@/lib/library';
 import {
   Plus, Search, Pin, Trash2, Edit2, X, Check,
   BookOpen, FileText, Calendar, ChevronRight,
@@ -177,7 +178,7 @@ export default function NotebookPage() {
                       key={note.id}
                       note={note}
                       isSelected={selectedNote?.id === note.id}
-                      onSelect={() => { setSelectedNote(note); setEditMode(false); }}
+                      onSelect={() => { setSelectedNote(note); setEditMode(false); addRecentItem({ id: note.id, type: 'note', title: note.title }); }}
                       onPin={() => togglePin(note.id)}
                       onDelete={() => deleteNote(note.id)}
                     />
@@ -193,7 +194,7 @@ export default function NotebookPage() {
                       key={note.id}
                       note={note}
                       isSelected={selectedNote?.id === note.id}
-                      onSelect={() => { setSelectedNote(note); setEditMode(false); }}
+                      onSelect={() => { setSelectedNote(note); setEditMode(false); addRecentItem({ id: note.id, type: 'note', title: note.title }); }}
                       onPin={() => togglePin(note.id)}
                       onDelete={() => deleteNote(note.id)}
                     />
