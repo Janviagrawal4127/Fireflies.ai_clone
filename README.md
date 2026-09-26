@@ -284,29 +284,6 @@ The current prototype uses **SQLite**. Render's default free-tier filesystem is 
 - SQLite foreign-key enforcement
 - N+1 query optimization
 
-## 💡 Design Decisions
-
-### Why Next.js?
-Provides excellent performance, file-system based routing (App Router), and seamless React integration for building a complex, responsive dashboard.
-
-### Why FastAPI?
-Offers high performance, automatic Swagger documentation, built-in validation via Pydantic, and extremely fast development speed for REST APIs.
-
-### Why SQLite?
-Simplifies setup and allows the entire backend to be run locally without installing Docker or external database services. Perfect for assignments and prototyping.
-
-### Why Zustand?
-A tiny, fast, and unopinionated state management library perfectly suited for managing global media player states (like audio `currentTime`) without the boilerplate of Redux.
-
-### Why binary search for transcript synchronization?
-Transcript lines are naturally sorted by time. Binary search reduces the active line lookup from O(N) to O(log N), preventing performance bottlenecks during continuous audio playback.
-
-### Why localStorage for Library features?
-To demonstrate complex frontend interactions (Starred, Recent, Shared) rapidly without extending the backend schema to support auth and multi-tenant isolation, keeping the assignment scope focused.
-
-### Why seeded transcripts instead of real speech-to-text?
-Integrating live speech-to-text (like Whisper) is outside the assignment's scope and would require significant cloud resources. Seeded data perfectly emulates the required UX.
-
 ## 🚧 Scope / Limitations
 
 The following features were intentionally considered outside the scope of this assignment:
@@ -320,22 +297,6 @@ The following features were intentionally considered outside the scope of this a
 - Real cloud-scale database (e.g. PostgreSQL)
 
 Mocked and seeded data is utilized intentionally to fulfill the assignment requirements.
-
-## 🎯 Interview Highlights
-
-- Full-stack Next.js + FastAPI architecture
-- REST API design
-- SQLAlchemy relationships
-- Interactive transcript/audio synchronization
-- Binary search for active transcript line
-- Zustand shared media state
-- CRUD workflows
-- Search and filtering
-- XSS-safe highlighting
-- SQLite foreign-key enforcement
-- N+1 query optimization
-- Responsive component architecture
-- localStorage-based workspace features
 
 ## 👩‍💻 Author
 
