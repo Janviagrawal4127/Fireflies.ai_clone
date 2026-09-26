@@ -1,204 +1,345 @@
-# Fireflies Clone — Meeting Notes & Transcription Platform
+# Fireflies.ai Clone — Meeting Notes & Transcription Platform
 
-A full-stack clone of [Fireflies.ai](https://fireflies.ai) built as an SDE assignment.  
-Recreates the Fireflies meeting-assistant experience: meetings library, interactive transcripts, AI summaries, and action items — with an original implementation.
+A full-stack meeting assistant inspired by Fireflies.ai that provides a meeting library, interactive transcripts, audio playback, AI-style summaries, action items, search, analytics, notebook, integrations, and workspace management.
 
----
+## 🚀 Live Demo
 
-## Tech Stack
+### Frontend
+[https://fireflies-ai-clone-u4h4.vercel.app/](https://fireflies-ai-clone-u4h4.vercel.app/)
+
+### Backend API
+[https://fireflies-ai-clone-admk.onrender.com/](https://fireflies-ai-clone-admk.onrender.com/)
+
+* Frontend deployed on Vercel.
+* Backend deployed on Render.
+* Default demo workspace does not require authentication.
+
+## ✨ Application Preview
+
+- **Landing Page**
+- **Dashboard**
+- **Meeting Detail / Transcript**
+- **Notebook**
+- **Analytics**
+- **Integrations**
+- **Settings**
+- **Library**
+
+*(UI screenshots can be added here once generated)*
+
+## 📋 Features
+
+### Meeting Workspace
+- Meeting library
+- Grid/List view
+- Search
+- Date filtering
+- Participant filtering
+- Recent/Oldest sorting
+- Meeting creation
+- Meeting editing
+- Meeting deletion
+
+### Interactive Transcript
+- Speaker labels
+- Timestamps
+- Transcript search
+- Search highlighting
+- Click transcript line → seek audio
+- Audio playback → active transcript synchronization
+- Binary-search transcript synchronization
+
+### AI Summary
+- Meeting overview
+- Key topics
+- Editable notes
+- Action items
+- Action item completion
+- Action item CRUD
+
+### Library
+- Starred meetings
+- Recent meetings
+- Recent Notebook notes
+- Shared with me
+- Persistent local workspace state
+
+### Workspace
+- Notebook
+- Analytics
+- Integrations
+- Settings
+- Profile
+- Responsive sidebar/navigation
+
+### Landing Experience
+- Fireflies-inspired landing page
+- Product feature sections
+- CTA
+- Direct navigation to dashboard
+
+## 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
-| Frontend | Next.js 16 (App Router), TypeScript, Tailwind CSS, Zustand |
-| Backend | Python 3.14, FastAPI, SQLAlchemy 2.0 |
+|---|---|
+| Frontend | Next.js, TypeScript, React |
+| Styling | Tailwind CSS |
+| State Management | Zustand |
+| Backend | Python, FastAPI |
 | Database | SQLite |
-| Icons | Lucide React |
-| HTTP | Axios |
+| ORM | SQLAlchemy |
+| API Communication | REST |
+| Deployment | Vercel + Render |
+| Audio | HTML5 Audio API |
+| Persistence | SQLite + localStorage |
 
----
+## 🏗️ Architecture
 
-## Architecture Overview
-
+**Frontend:**
 ```
-fireflies-clone/
-├── frontend/          # Next.js App Router SPA
-│   └── src/
-│       ├── app/       # Pages (/, /meetings/[id], /settings)
-│       ├── components/
-│       │   ├── layout/     # Sidebar, Topbar
-│       │   ├── meetings/   # Card, Filters, Modals (Create/Edit)
-│       │   ├── player/     # MediaPlayer with waveform
-│       │   ├── summary/    # Summary tab, Action items tab
-│       │   ├── transcript/ # TranscriptPanel + TranscriptLine
-│       │   └── ui/         # ToastContainer
-│       ├── lib/       # api.ts (Axios client), utils.ts (helpers)
-│       ├── store/     # Zustand store (media time, active line, toasts)
-│       └── types/     # TypeScript interfaces
-└── backend/           # FastAPI REST API
-    └── app/
-        ├── main.py        # FastAPI app, CORS, router registration
-        ├── database.py    # SQLAlchemy engine + session
-        ├── models/        # ORM models (Meeting, TranscriptLine, Summary, ActionItem)
-        ├── schemas/       # Pydantic request/response schemas
-        ├── routers/       # meetings, transcripts, summaries, action_items, search
-        └── seed/          # Seed script with 8 realistic meetings
+Next.js App Router
+    ↓
+Reusable React Components
+    ↓
+Zustand / API utilities
+    ↓
+FastAPI REST API
 ```
 
-**Data flow:**
-1. Next.js page fetches data via `lib/api.ts` (Axios) → FastAPI
-2. FastAPI validates with Pydantic → queries SQLAlchemy → returns JSON
-3. Client state (media time, active transcript line) lives in Zustand
-4. `findActiveLineIndex()` uses binary search — no API call on every `timeupdate`
-
----
-
-## Database Schema
-
-```sql
--- 4 tables with proper foreign keys and cascade deletes
-
-CREATE TABLE meetings (
-    id           TEXT PRIMARY KEY,          -- UUID string
-    title        TEXT NOT NULL,
-    date         TEXT NOT NULL,             -- ISO 8601
-    duration     INTEGER NOT NULL,          -- seconds
-    participants TEXT NOT NULL,             -- JSON array
-    audio_url    TEXT,
-    created_at   TEXT NOT NULL,
-    updated_at   TEXT NOT NULL
-);
-
-CREATE TABLE transcript_lines (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    meeting_id TEXT NOT NULL REFERENCES meetings(id) ON DELETE CASCADE,
-    speaker    TEXT NOT NULL,
-    text       TEXT NOT NULL,
-    start_time REAL NOT NULL,              -- seconds from start
-    end_time   REAL NOT NULL,
-    sequence   INTEGER NOT NULL
-);
-
-CREATE TABLE summaries (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    meeting_id TEXT NOT NULL UNIQUE REFERENCES meetings(id) ON DELETE CASCADE,
-    overview   TEXT NOT NULL,
-    key_topics TEXT NOT NULL,              -- JSON array
-    notes      TEXT
-);
-
-CREATE TABLE action_items (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    meeting_id TEXT NOT NULL REFERENCES meetings(id) ON DELETE CASCADE,
-    task       TEXT NOT NULL,
-    assignee   TEXT,
-    due_date   TEXT,
-    completed  INTEGER NOT NULL DEFAULT 0
-);
+**Backend:**
+```
+FastAPI
+    ↓
+Routers
+    ↓
+SQLAlchemy ORM
+    ↓
+SQLite
 ```
 
-**Entity relationships:**
-- `meetings` 1→N `transcript_lines`
-- `meetings` 1→1 `summaries`
-- `meetings` 1→N `action_items`
-- All children cascade-delete when a meeting is deleted
+Browser-only workspace features such as local starred/recent/shared state use `localStorage` because authentication and multi-user collaboration are intentionally outside the assignment scope.
 
----
+## 📁 Project Structure
 
-## API Overview
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/meetings` | List meetings (search, sort, date_from, date_to, participant) |
-| POST | `/api/meetings` | Create meeting |
-| GET | `/api/meetings/{id}` | Get full meeting (with transcript, summary, actions) |
-| PUT | `/api/meetings/{id}` | Update meeting metadata |
-| DELETE | `/api/meetings/{id}` | Delete meeting (cascades) |
-| GET | `/api/meetings/{id}/transcript` | Get transcript lines |
-| POST | `/api/meetings/{id}/transcript` | Replace transcript |
-| GET | `/api/meetings/{id}/summary` | Get summary |
-| PUT | `/api/meetings/{id}/summary` | Update summary/notes |
-| GET | `/api/meetings/{id}/actions` | List action items |
-| POST | `/api/meetings/{id}/actions` | Create action item |
-| PUT | `/api/actions/{id}` | Update action item (toggle complete, edit) |
-| DELETE | `/api/actions/{id}` | Delete action item |
-| GET | `/api/search?q=` | Global transcript search |
-| GET | `/health` | Health check |
-
-Interactive docs: http://localhost:8000/docs
-
----
-
-## Setup Instructions
-
-### Prerequisites
-- Node.js 18+ and npm
-- Python 3.11+
-
-### 1. Clone the repository
-```bash
-git clone <your-repo-url>
-cd fireflies-clone
+```
+Fireflies.ai_clone/
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── dashboard/
+│   │   │   ├── meetings/
+│   │   │   ├── notebook/
+│   │   │   ├── integrations/
+│   │   │   ├── analytics/
+│   │   │   ├── settings/
+│   │   │   ├── starred/
+│   │   │   ├── recent/
+│   │   │   ├── shared/
+│   │   │   └── page.tsx
+│   │   ├── components/
+│   │   ├── lib/
+│   │   ├── store/
+│   │   └── types/
+│   └── package.json
+│
+├── backend/
+│   ├── app/
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── seed/
+│   │   └── main.py
+│   └── requirements.txt
+│
+└── README.md
 ```
 
-### 2. Backend Setup
+## 🗄️ Database Design
+
+The backend uses a relational SQLite database with the following primary tables:
+
+*   **`meetings`**: Stores meeting metadata (title, date, duration, participants as JSON, audio URL).
+*   **`transcript_lines`**: Stores individual transcript utterances linked to a meeting via a foreign key. Includes start/end timestamps, speaker name, text, and sequence order.
+*   **`summaries`**: Stores AI-style meeting overviews, key topics (as JSON), and editable user notes. Linked 1-to-1 with a meeting.
+*   **`action_items`**: Stores tasks generated from the meeting, including assignee, due date, and completion status. Linked many-to-1 with a meeting.
+
+**Entity Relationship Overview:**
+```
+Meeting
+ ├── TranscriptLine (1-to-many)
+ ├── Summary (1-to-1)
+ └── ActionItem (1-to-many)
+```
+Participants and key topics are stored as JSON arrays to simplify the schema for a prototype scope while retaining flexibility.
+
+## 🔌 API Overview
+
+Key REST endpoints provided by the FastAPI backend:
+
+**Meetings**
+*   `GET    /api/meetings`
+*   `GET    /api/meetings/{id}`
+*   `POST   /api/meetings`
+*   `PUT    /api/meetings/{id}`
+*   `DELETE /api/meetings/{id}`
+
+**Transcripts**
+*   `GET    /api/meetings/{id}/transcript`
+*   `POST   /api/meetings/{id}/transcript`
+
+**Summaries**
+*   `GET    /api/meetings/{id}/summary`
+*   `PUT    /api/meetings/{id}/summary`
+
+**Action Items**
+*   `GET    /api/meetings/{id}/actions`
+*   `POST   /api/meetings/{id}/actions`
+*   `PUT    /api/actions/{item_id}`
+*   `DELETE /api/actions/{item_id}`
+
+**Search**
+*   `GET    /api/search`
+
+## 💻 Local Development
+
+### Backend
+
 ```bash
 cd backend
+python -m venv venv
 
-# Install dependencies
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+# source venv/bin/activate
+
 pip install -r requirements.txt
 
-# Create the data directory
-mkdir data
-
-# Seed the database (8 meetings with full content)
+# Seed the database with demo data:
 python -m app.seed.seed
 
-# Start the API server
+# Run the API:
 python -m uvicorn app.main:app --reload --port 8000
 ```
 
-Backend runs at: http://localhost:8000  
-API docs: http://localhost:8000/docs
+### Frontend
 
-### 3. Frontend Setup
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
+```
 
-# Start the dev server
+Create a `.env.local` file inside the `frontend` directory with:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+Then run the development server:
+```bash
 npm run dev
 ```
 
-Frontend runs at: http://localhost:3000
+*   **Frontend:** http://localhost:3000
+*   **Backend:** http://localhost:8000
+*   **Health:** http://localhost:8000/health
 
-> Both servers must be running simultaneously.
+## ☁️ Deployment
 
----
+### Frontend — Vercel
 
-## Core Features
+*   **Live:** https://fireflies-ai-clone-u4h4.vercel.app/
+*   **Root Directory:** `frontend`
+*   **Environment Variable:**
+    ```
+    NEXT_PUBLIC_API_URL=https://fireflies-ai-clone-admk.onrender.com
+    ```
 
-- **Meetings Dashboard** — grid/list view, search, date filter, sort by date
-- **Meeting Detail** — title, date, duration, participants, edit, delete, export
-- **Media Player** — simulated playback with waveform, seek bar, play/pause/skip
-- **Interactive Transcript** — click line → seek player; player time → highlight active line (binary search, no API calls per frame)
-- **Transcript Search** — case-insensitive with match count and highlighted results
-- **AI Summary** — seeded overview, key topics, editable notes
-- **Action Items** — create, edit, toggle complete, delete; all persisted in SQLite
-- **Global Search** — search transcript text across all meetings from the top bar
-- **Export** — download meeting as Markdown file
-- **Toast notifications** — feedback for all mutations
-- **Settings page** — polished placeholder with profile, preferences, notifications, integrations
+### Backend — Render
 
----
+*   **Live:** https://fireflies-ai-clone-admk.onrender.com/
+*   **Root Directory:** `backend`
+*   **Build Command:** `pip install -r requirements.txt`
+*   **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port 10000`
+*   **Environment Variable:**
+    ```
+    FRONTEND_URL=https://fireflies-ai-clone-u4h4.vercel.app/
+    ```
 
-## Assumptions, Limitations & Scope
+## ⚠️ Important Deployment Note
 
-1. **Original Implementation**: This project is an original implementation built as an assignment. Fireflies.ai is used strictly as a visual and UX reference.
-2. **Audio & Synchronization**: The player uses a real HTML5 `<audio>` element with a silent sample audio file (`/sample.wav`) for transcript synchronization. This proves the core concept of syncing native media playback events to interactive UI without requiring large audio files in the repo.
-3. **Speech-to-Text**: Real AI transcription (speech-to-text) is out of scope. Transcript data is seeded from mock data or imported via the "Paste/Upload Transcript" feature.
-4. **Authentication**: Authentication is mocked/default-user based (Janvi Dev). No real auth flow is implemented.
-5. **AI Summaries**: Summaries are seeded/mocked. No actual LLM API calls are made, though the architecture allows plugging a real LLM into the backend service.
-6. **Transcript/Player sync**: Uses `findActiveLineIndex()` with binary search — O(log n) on every `timeupdate` event, ensuring perfect sync without backend calls.
-7. **Database schema**: `participants` and `key_topics` are stored as JSON strings in SQLite to avoid over-complicating joins for simple lists. `check_same_thread=False` is set for FastAPI's multi-threaded handling.
+The current prototype uses **SQLite**. Render's default free-tier filesystem is ephemeral, meaning any persistent user-created SQLite data may reset on instance restart unless a persistent disk is configured. The seeded demo data can easily be recreated on startup. SQLite is used here for rapid prototyping and assignment purposes rather than production-grade multi-user storage.
+
+## 🧪 Quality Checks
+
+- TypeScript compilation
+- Production build
+- Backend API testing
+- CRUD testing
+- Transcript/audio synchronization
+- Global search
+- Responsive UI testing
+- Error handling
+- Toast notifications
+- XSS-safe transcript highlighting
+- SQLite foreign-key enforcement
+- N+1 query optimization
+
+## 💡 Design Decisions
+
+### Why Next.js?
+Provides excellent performance, file-system based routing (App Router), and seamless React integration for building a complex, responsive dashboard.
+
+### Why FastAPI?
+Offers high performance, automatic Swagger documentation, built-in validation via Pydantic, and extremely fast development speed for REST APIs.
+
+### Why SQLite?
+Simplifies setup and allows the entire backend to be run locally without installing Docker or external database services. Perfect for assignments and prototyping.
+
+### Why Zustand?
+A tiny, fast, and unopinionated state management library perfectly suited for managing global media player states (like audio `currentTime`) without the boilerplate of Redux.
+
+### Why binary search for transcript synchronization?
+Transcript lines are naturally sorted by time. Binary search reduces the active line lookup from O(N) to O(log N), preventing performance bottlenecks during continuous audio playback.
+
+### Why localStorage for Library features?
+To demonstrate complex frontend interactions (Starred, Recent, Shared) rapidly without extending the backend schema to support auth and multi-tenant isolation, keeping the assignment scope focused.
+
+### Why seeded transcripts instead of real speech-to-text?
+Integrating live speech-to-text (like Whisper) is outside the assignment's scope and would require significant cloud resources. Seeded data perfectly emulates the required UX.
+
+## 🚧 Scope / Limitations
+
+The following features were intentionally considered outside the scope of this assignment:
+
+- Real authentication & OAuth
+- Real-time meeting bot recording
+- Live speech-to-text processing
+- Real Zoom/Google Meet integrations
+- Multi-user collaboration & permissions
+- Production billing
+- Real cloud-scale database (e.g. PostgreSQL)
+
+Mocked and seeded data is utilized intentionally to fulfill the assignment requirements.
+
+## 🎯 Interview Highlights
+
+- Full-stack Next.js + FastAPI architecture
+- REST API design
+- SQLAlchemy relationships
+- Interactive transcript/audio synchronization
+- Binary search for active transcript line
+- Zustand shared media state
+- CRUD workflows
+- Search and filtering
+- XSS-safe highlighting
+- SQLite foreign-key enforcement
+- N+1 query optimization
+- Responsive component architecture
+- localStorage-based workspace features
+
+## 👩‍💻 Author
+
+**Janvi Agrawal**
+B.Tech Computer Science — Data Science
+UPES Dehradun
+GitHub: [https://github.com/Janviagrawal4127](https://github.com/Janviagrawal4127)
